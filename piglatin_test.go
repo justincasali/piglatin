@@ -3,6 +3,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"strings"
 	"testing"
 	"unicode/utf8"
 
@@ -45,4 +46,21 @@ func FuzzLatin(f *testing.F) {
 			t.Fatalf("pig.Latin produced invalid UTF-8 for input %q: %q", s, out)
 		}
 	})
+}
+
+var (
+	asciiInput   = strings.Repeat("The quick brown fox jumps over the lazy dog. ", 32)
+	unicodeInput = strings.Repeat("The quick brown αβγ jumps over the lazy δog. ", 32)
+)
+
+func BenchmarkLatinASCII(b *testing.B) {
+	for b.Loop() {
+		_ = pig.Latin(asciiInput)
+	}
+}
+
+func BenchmarkLatinUnicode(b *testing.B) {
+	for b.Loop() {
+		_ = pig.Latin(unicodeInput)
+	}
 }
