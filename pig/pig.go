@@ -74,17 +74,14 @@ func split(input string) (output []string) {
 
 // Latin converts text to pig latin
 func Latin(input string) string {
-
-	// convert string to lower case and split up words
 	lower := strings.ToLower(input)
-	words := split(lower)
 
-	// loop over words
-	for i, w := range words {
-		words[i] = convert(w)
+	var b strings.Builder
+	b.Grow(len(lower) + len(lower)/4)
+
+	for _, w := range split(lower) {
+		b.WriteString(convert(w))
 	}
 
-	// return joined words
-	return strings.Join(words, "")
-
+	return b.String()
 }
